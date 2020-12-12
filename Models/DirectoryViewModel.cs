@@ -9,6 +9,8 @@ namespace RemoteDirectoryList.Models
     {
         public string DirectoryPath { get; set; }
 
+        public string ParentDirectoryPath { get; set; }
+
         public List<EntryViewModel> Files { get; set; }
     }
 }

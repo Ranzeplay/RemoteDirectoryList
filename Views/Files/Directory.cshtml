@@ -44,7 +44,7 @@
         @if (requestPath != "/")
         {
             <tr>
-                 <td colspan="4"><a asp-action="Directory" asp-route-path="@requestPath">Parent Directory</a></td>
+                 <td colspan="4"><a asp-action="Directory" asp-route-path="@Model.ParentDirectoryPath">Parent Directory</a></td>
             </tr>
         }
         @foreach (var file in Model.Files)
