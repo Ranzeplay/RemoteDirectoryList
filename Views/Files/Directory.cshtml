@@ -1,0 +1,100 @@
+﻿@model RemoteDirectoryList.Models.DirectoryViewModel
+@{
+    var requestPath = Context.Request.Query["path"].ToString();
+    if (requestPath == "")
+    {
+        requestPath = "/";
+    }
+
+    ViewData["Title"] = "Files - " + requestPath;
+}
+
+<h1>Files</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        @{ 
+            var breadcrumbTree = requestPath.Split('/').Where(p => !string.IsNullOrWhiteSpace(p)).ToList();
+            if(breadcrumbTree.Count == 0)
+            {
+                breadcrumbTree.Add("/");
+            }
+            else
+            {
+                breadcrumbTree[0] = breadcrumbTree[0].Insert(0, "/ ");
+            }
+        }
+        @foreach (var pathName in breadcrumbTree)
+        {
+            <li class="breadcrumb-item active" aria-current="page">@pathName</li>
+        }
+    </ol>
+</nav>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Last Modify Time (Utc)</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (requestPath != "/")
+        {
+            <tr>
+                 <td colspan="4"><a asp-action="Directory" asp-route-path="@requestPath">Parent Directory</a></td>
+            </tr>
+        }
+        @foreach (var file in Model.Files)
+        {
+            @if (file.IsDirectory)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Directory" asp-route-path="@requestPath/@file.Name">@file.Name</a>
+                    </td>
+                    <td></td>
+                    <td>@file.LastModifyTime.ToString("G")</td>
+                    <td></td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>@file.Name</td>
+                    <td>
+                        @if (file.Size.KB < 1)
+                        {
+                            @($"{file.Size.Byte.ToString("0.00")} Byte")
+                        }
+                        else
+                        {
+                            if (file.Size.MB < 1)
+                            {
+                                @($"{file.Size.KB.ToString("0.00")} KB")
+                            }
+                            else
+                            {
+                                if (file.Size.GB < 1)
+                                {
+                                    @($"{file.Size.MB.ToString("0.00")} MB")
+                                }
+                                else
+                                {
+                                    @($"{file.Size.GB.ToString("0.00")} GB")
+                                }
+                            }
+                        }
+                    </td>
+                    <td>@file.LastModifyTime.ToString("G")</td>
+                    <td>
+                        <a class="btn btn-outline-primary btn-sm" asp-action="Download" asp-route-path="@requestPath/@file.Name" target="_blank">Download</a>
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
