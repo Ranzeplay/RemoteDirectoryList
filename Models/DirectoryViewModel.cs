@@ -11,6 +11,8 @@ namespace RemoteDirectoryList.Models
 
         public string ParentDirectoryPath { get; set; }
 
+        public bool IsRootDirectory { get; set; }
+
         public List<EntryViewModel> Files { get; set; }
     }
 }

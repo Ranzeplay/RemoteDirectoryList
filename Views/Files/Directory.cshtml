@@ -41,7 +41,7 @@
         </tr>
     </thead>
     <tbody>
-        @if (requestPath != "/")
+        @if (!Model.IsRootDirectory)
         {
             <tr>
                  <td colspan="4"><a asp-action="Directory" asp-route-path="@Model.ParentDirectoryPath">Parent Directory</a></td>
@@ -65,28 +65,7 @@
                 <tr>
                     <td>@file.Name</td>
                     <td>
-                        @if (file.Size.KB < 1)
-                        {
-                            @($"{file.Size.Byte.ToString("0.00")} Byte")
-                        }
-                        else
-                        {
-                            if (file.Size.MB < 1)
-                            {
-                                @($"{file.Size.KB.ToString("0.00")} KB")
-                            }
-                            else
-                            {
-                                if (file.Size.GB < 1)
-                                {
-                                    @($"{file.Size.MB.ToString("0.00")} MB")
-                                }
-                                else
-                                {
-                                    @($"{file.Size.GB.ToString("0.00")} GB")
-                                }
-                            }
-                        }
+                        <partial name="_FileSizePartial" model="file.Size" />
                     </td>
                     <td>@file.LastModifyTime.ToString("G")</td>
                     <td>

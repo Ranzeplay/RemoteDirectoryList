@@ -1,0 +1,24 @@
+﻿@model RemoteDirectoryList.Models.FileSize
+
+@if (Model.KB < 1)
+{
+    @($"{Model.Byte.ToString("0.00")} Byte")
+}
+else
+{
+    if (Model.MB < 1)
+    {
+        @($"{Model.KB.ToString("0.00")} KB")
+    }
+    else
+    {
+        if (Model.GB < 1)
+        {
+            @($"{Model.MB.ToString("0.00")} MB")
+        }
+        else
+        {
+            @($"{Model.GB.ToString("0.00")} GB")
+        }
+    }
+}
