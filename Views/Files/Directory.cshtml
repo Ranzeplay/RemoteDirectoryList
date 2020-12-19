@@ -1,6 +1,6 @@
 ﻿@model RemoteDirectoryList.Models.DirectoryViewModel
 @{
-    var requestPath = Context.Request.Query["path"].ToString();
+    var requestPath = Context.Request.Query["path"].ToString().TrimStart('\\');
     if (requestPath == "")
     {
         requestPath = "/";

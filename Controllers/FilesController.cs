@@ -24,27 +24,27 @@ namespace RemoteDirectoryList.Controllers
 
         public IActionResult Directory(string path = "")
         {
-            path = path.TrimStart('/');
+            path = path.TrimStart('/').TrimStart('\\');
 
             var model = new DirectoryViewModel
             {
                 DirectoryPath = Path.Combine(_appSettings.RootDirectoryPath, path),
-                ParentDirectoryPath = _appSettings.RootDirectoryPath,
                 Files = new List<EntryViewModel>()
             };
 
+            model.IsRootDirectory = model.DirectoryPath == _appSettings.RootDirectoryPath;
+
             var directory = new DirectoryInfo(model.DirectoryPath);
-            // The directory is not a root drive, it has a parent directory 
-            if (directory.Parent != null)
+            if(directory.Parent != null)
             {
                 model.ParentDirectoryPath = directory.Parent.FullName.Replace(_appSettings.RootDirectoryPath, "");
             }
-
-            if (directory == null)
+            else
             {
-                return NotFound();
+                model.ParentDirectoryPath = directory.FullName.Replace(_appSettings.RootDirectoryPath, "");
             }
 
+            #region List directory entries
             // List all directories
             directory.GetDirectories().ToList().ForEach(file =>
             {
@@ -72,6 +72,7 @@ namespace RemoteDirectoryList.Controllers
 
                 model.Files.Add(fileModel);
             });
+            #endregion
 
             return base.View(model);
         }
