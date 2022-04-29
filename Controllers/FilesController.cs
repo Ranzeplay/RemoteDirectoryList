@@ -44,6 +44,11 @@ namespace RemoteDirectoryList.Controllers
                 model.ParentDirectoryPath = directory.FullName.Replace(_appSettings.RootDirectoryPath, "");
             }
 
+            if (!directory.Exists)
+            {
+                return RedirectToAction("DirectoryNotFound", "Error", new { requestedDirectoryPath = path });
+            }
+
             #region List directory entries
             // List all directories
             directory.GetDirectories().ToList().ForEach(file =>
