@@ -7,6 +7,8 @@ namespace RemoteDirectoryList.Models
 {
     public class AppSettings
     {
-        public string RootDirectoryPath { get; set; }
+        public RootDirectoryTabModel[] RootDirectoryTabs { get; set; }
+
+        public string DefaultTabId { get; set; }
     }
 }

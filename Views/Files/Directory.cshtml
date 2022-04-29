@@ -6,12 +6,14 @@
         requestPath = "/";
     }
 
+    RemoteDirectoryList.Models.RootDirectoryTabModel[] tabs = (RemoteDirectoryList.Models.RootDirectoryTabModel[]) ViewData["tabs"];
+
     ViewData["Title"] = "Files - " + requestPath;
 }
 
 <h1>Files</h1>
 
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" class="mt-2">
     <ol class="breadcrumb">
         @{ 
             var breadcrumbTree = requestPath.Split('/').Where(p => !string.IsNullOrWhiteSpace(p)).ToList();
@@ -24,6 +26,7 @@
                 breadcrumbTree[0] = breadcrumbTree[0].Insert(0, "/ ");
             }
         }
+        <li class="font-weight-bold">@tabs.First(t => t.Id == Model.TabId).DisplayName > &nbsp;</li>
         @foreach (var pathName in breadcrumbTree)
         {
             <li class="breadcrumb-item active" aria-current="page">@pathName</li>
@@ -44,7 +47,7 @@
         @if (!Model.IsRootDirectory)
         {
             <tr>
-                 <td colspan="4"><a asp-action="Directory" asp-route-path="@Model.ParentDirectoryPath">Parent Directory</a></td>
+                 <td colspan="4"><a asp-action="Directory" asp-route-path="@Model.ParentDirectoryPath" asp-route-tabId="@Model.TabId">Parent Directory</a></td>
             </tr>
         }
         @foreach (var file in Model.Files)
@@ -53,7 +56,7 @@
             {
                 <tr>
                     <td>
-                        <a asp-action="Directory" asp-route-path="@requestPath/@file.Name">@file.Name</a>
+                        <a asp-action="Directory" asp-route-path="@requestPath/@file.Name" asp-route-tabId="@Model.TabId">@file.Name</a>
                     </td>
                     <td></td>
                     <td>@file.LastModifyTime.ToString("G")</td>
@@ -69,7 +72,7 @@
                     </td>
                     <td>@file.LastModifyTime.ToString("G")</td>
                     <td>
-                        <a class="btn btn-outline-primary btn-sm" asp-action="Download" asp-route-path="@requestPath/@file.Name" target="_blank">Download</a>
+                        <a class="btn btn-outline-primary btn-sm" asp-action="Download" asp-route-path="@requestPath/@file.Name" asp-route-tabId="@Model.TabId" target="_blank">Download</a>
                     </td>
                 </tr>
             }

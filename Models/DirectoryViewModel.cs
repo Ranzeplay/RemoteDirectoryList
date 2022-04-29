@@ -13,6 +13,8 @@ namespace RemoteDirectoryList.Models
 
         public bool IsRootDirectory { get; set; }
 
+        public string TabId { get; set; }
+
         public List<EntryViewModel> Files { get; set; }
     }
 }

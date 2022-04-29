@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    RemoteDirectoryList.Models.RootDirectoryTabModel[] tabs = (RemoteDirectoryList.Models.RootDirectoryTabModel[]) ViewData["tabs"];
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -18,9 +22,12 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @foreach(var tab in tabs)
+                        {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Files" asp-action="Directory" asp-route-path="/">Root</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Files" asp-action="Directory" asp-route-path="/" asp-route-tabId="@tab.Id">@tab.DisplayName</a>
                         </li>
+                        }
                     </ul>
                 </div>
             </div>

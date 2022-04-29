@@ -22,26 +22,42 @@ namespace RemoteDirectoryList.Controllers
             _appSettings = appSettings.Value;
         }
 
-        public IActionResult Directory(string path = "")
+        public IActionResult Directory(string path = "", string tabId = null)
         {
+            if(tabId == null)
+            {
+                tabId = _appSettings.DefaultTabId;
+            }
+
+            // Adjust root directory to current tab
+            var tabs = _appSettings.RootDirectoryTabs.ToArray();
+            var tab = tabs.FirstOrDefault(t => t.Id == tabId);
+            if(tab == null)
+            {
+                return RedirectToAction("DirectoryNotFound", "Error", new { requestedDirectoryPath = path });
+            }
+
+            var currentRootDirectory = tab.AbsolutePath;
+
             path = path.TrimStart('/').TrimStart('\\');
 
             var model = new DirectoryViewModel
             {
-                DirectoryPath = Path.Combine(_appSettings.RootDirectoryPath, path),
-                Files = new List<EntryViewModel>()
+                DirectoryPath = Path.Combine(currentRootDirectory, path),
+                Files = new List<EntryViewModel>(),
+                TabId = tabId
             };
 
-            model.IsRootDirectory = model.DirectoryPath == _appSettings.RootDirectoryPath;
+            model.IsRootDirectory = model.DirectoryPath == currentRootDirectory;
 
             var directory = new DirectoryInfo(model.DirectoryPath);
             if(directory.Parent != null)
             {
-                model.ParentDirectoryPath = directory.Parent.FullName.Replace(_appSettings.RootDirectoryPath, "");
+                model.ParentDirectoryPath = directory.Parent.FullName.Replace(currentRootDirectory, "");
             }
             else
             {
-                model.ParentDirectoryPath = directory.FullName.Replace(_appSettings.RootDirectoryPath, "");
+                model.ParentDirectoryPath = directory.FullName.Replace(currentRootDirectory, "");
             }
 
             if (!directory.Exists)
@@ -79,13 +95,23 @@ namespace RemoteDirectoryList.Controllers
             });
             #endregion
 
+            // Put all tabs into view
+            ViewData["Tabs"] = tabs;
+
             return base.View(model);
         }
 
-        public IActionResult Download(string path)
+        public IActionResult Download(string path, string tabId = null)
         {
+            // Adjust root directory to current tab
+            var tab = _appSettings.RootDirectoryTabs.FirstOrDefault(t => t.Id == tabId);
+            if (tab == null)
+            {
+                return RedirectToAction("DirectoryNotFound", "Error", new { requestedDirectoryPath = path });
+            }
+
             path = path.TrimStart('/');
-            var absolutePath = Path.Combine(_appSettings.RootDirectoryPath, path);
+            var absolutePath = Path.Combine(tab.AbsolutePath, path);
 
             if (System.IO.File.Exists(absolutePath))
             {
