@@ -6,33 +6,35 @@
         requestPath = "/";
     }
 
-    RemoteDirectoryList.Models.RootDirectoryTabModel[] tabs = (RemoteDirectoryList.Models.RootDirectoryTabModel[]) ViewData["tabs"];
+    RemoteDirectoryList.Models.RootDirectoryTabModel[] tabs = (RemoteDirectoryList.Models.RootDirectoryTabModel[])ViewData["tabs"];
 
     ViewData["Title"] = "Files - " + requestPath;
 }
 
 <h1>Files</h1>
 
-<nav aria-label="breadcrumb" class="mt-2">
-    <ol class="breadcrumb">
-        @{ 
-            var breadcrumbTree = requestPath.Split('/').Where(p => !string.IsNullOrWhiteSpace(p)).ToList();
-            if(breadcrumbTree.Count == 0)
-            {
-                breadcrumbTree.Add("/");
+<div class="clearfix mt-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            @{
+                var breadcrumbTree = requestPath.Split('/').Where(p => !string.IsNullOrWhiteSpace(p)).ToList();
+                if (breadcrumbTree.Count == 0)
+                {
+                    breadcrumbTree.Add("/");
+                }
+                else
+                {
+                    breadcrumbTree[0] = breadcrumbTree[0].Insert(0, "/ ");
+                }
             }
-            else
+            <li class="font-weight-bold">@tabs.First(t => t.Id == Model.TabId).DisplayName > &nbsp;</li>
+            @foreach (var pathName in breadcrumbTree)
             {
-                breadcrumbTree[0] = breadcrumbTree[0].Insert(0, "/ ");
+                <li class="breadcrumb-item active" aria-current="page">@pathName</li>
             }
-        }
-        <li class="font-weight-bold">@tabs.First(t => t.Id == Model.TabId).DisplayName > &nbsp;</li>
-        @foreach (var pathName in breadcrumbTree)
-        {
-            <li class="breadcrumb-item active" aria-current="page">@pathName</li>
-        }
-    </ol>
-</nav>
+        </ol>
+    </nav>
+</div>
 
 <table class="table">
     <thead>
@@ -47,7 +49,7 @@
         @if (!Model.IsRootDirectory)
         {
             <tr>
-                 <td colspan="4"><a asp-action="Directory" asp-route-path="@Model.ParentDirectoryPath" asp-route-tabId="@Model.TabId">Parent Directory</a></td>
+                <td colspan="4"><a asp-action="Directory" asp-route-path="@Model.ParentDirectoryPath" asp-route-tabId="@Model.TabId">Parent Directory</a></td>
             </tr>
         }
         @foreach (var file in Model.Files)
@@ -76,7 +78,6 @@
                     </td>
                 </tr>
             }
-
         }
     </tbody>
 </table>
