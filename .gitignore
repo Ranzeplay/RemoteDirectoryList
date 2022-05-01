@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# LibMan packages
+wwwroot/lib/tus-js-client
+wwwroot/lib/Dropify

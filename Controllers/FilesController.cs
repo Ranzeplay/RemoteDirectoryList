@@ -62,6 +62,7 @@ namespace RemoteDirectoryList.Controllers
 
             if (!directory.Exists)
             {
+                _logger.LogWarning("Someone is reading a non-existing directory");
                 return RedirectToAction("DirectoryNotFound", "Error", new { requestedDirectoryPath = path });
             }
 

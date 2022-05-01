@@ -21,6 +21,8 @@ namespace RemoteDirectoryList
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+
+                    webBuilder.ConfigureKestrel(kestrel => kestrel.Limits.MaxRequestBodySize = null);
                 });
     }
 }

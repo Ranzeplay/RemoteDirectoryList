@@ -10,5 +10,7 @@ namespace RemoteDirectoryList.Models
         public RootDirectoryTabModel[] RootDirectoryTabs { get; set; }
 
         public string DefaultTabId { get; set; }
+
+        public string UploadTempDirectory { get; set; }
     }
 }

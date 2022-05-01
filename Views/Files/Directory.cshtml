@@ -12,6 +12,7 @@
 }
 
 <h1>Files</h1>
+<button class="btn btn-link" data-toggle="modal" data-target="#uploadModal">Upload file</button>
 
 <div class="clearfix mt-2">
     <nav aria-label="breadcrumb">
@@ -81,3 +82,43 @@
         }
     </tbody>
 </table>
+
+<!-- File upload dialog -->
+<div class="modal fade" id="uploadModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload file</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="file" class="dropify" id="fileUpload" data-max-file-size="4G" />
+                <div class="progress mt-2" style="height: 20px;">
+                    <div id="upload-progress" class="progress-bar" role="progressbar" style="width: 0%" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Okay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/lib/Dropify/js/dropify.min.js"></script>
+<script>
+    var tabId = @Html.Raw($"\"{Model.TabId}\"");
+    var path = @Html.Raw($"\"{requestPath}\"");
+
+    $('.dropify').dropify();
+</script>
+<script src="~/lib/tus-js-client/dist/tus.min.js"></script>
+<script src="~/js/fileUpload.js"></script>
+}
+
+@section Stylesheets {
+<link rel="stylesheet" href="~/lib/Dropify/css/dropify.min.css" />
+}
