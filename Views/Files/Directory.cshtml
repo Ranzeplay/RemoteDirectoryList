@@ -108,7 +108,7 @@
 </div>
 
 @section Scripts {
-<script src="~/lib/Dropify/js/dropify.min.js"></script>
+<script src="~/lib/dropify/dist/js/dropify.min.js"></script>
 <script>
     var tabId = @Html.Raw($"\"{Model.TabId}\"");
     var path = @Html.Raw($"\"{requestPath}\"");
@@ -120,5 +120,5 @@
 }
 
 @section Stylesheets {
-<link rel="stylesheet" href="~/lib/Dropify/css/dropify.min.css" />
+<link rel="stylesheet" href="~/lib/dropify/dist/css/dropify.min.css" />
 }

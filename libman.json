@@ -109,9 +109,22 @@
       ]
     },
     {
-      "provider": "cdnjs",
-      "library": "Dropify@0.2.2",
-      "destination": "wwwroot/lib/Dropify/"
+      "provider": "unpkg",
+      "library": "dropify@0.2.2",
+      "destination": "wwwroot/lib/dropify/",
+      "files": [
+        "dist/css/demo.css",
+        "dist/css/dropify.css",
+        "dist/css/dropify.min.css",
+        "dist/fonts/dropify.eot",
+        "dist/fonts/dropify.svg",
+        "dist/fonts/dropify.ttf",
+        "dist/fonts/dropify.woff",
+        "dist/js/dropify.js",
+        "dist/js/dropify.min.js",
+        "README.md",
+        "LICENCE.md"
+      ]
     }
   ]
 }
