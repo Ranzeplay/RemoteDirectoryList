@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RemoteDirectoryList.Models;
+using System;
 
 namespace RemoteDirectoryList.Controllers
 {
@@ -15,6 +17,8 @@ namespace RemoteDirectoryList.Controllers
         public IActionResult DirectoryNotFound(string? requestedDirectoryPath)
         {
             _logger.LogError($"Someone is trying to access an unknown directory: {requestedDirectoryPath}");
+
+            ViewData["tabs"] = Array.Empty<RootDirectoryTabModel>();
 
             return View();
         }
