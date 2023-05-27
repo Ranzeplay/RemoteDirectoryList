@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RemoteDirectoryList.Endpoints;
 using RemoteDirectoryList.Models;
 using System;
 using System.Collections.Generic;
@@ -87,8 +86,6 @@ namespace RemoteDirectoryList
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Files}/{action=Directory}/{id?}");
-                // Tus file upload
-                endpoints.MapGet("/api/upload/{fileId}", FileUploadEndpoint.HandleRoute);
             });
         }
 

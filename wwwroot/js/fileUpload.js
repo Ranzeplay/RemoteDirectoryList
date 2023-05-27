@@ -13,7 +13,7 @@
             path: path,
         },
         onError: function (error) {
-            console.log("Failed because: " + error);
+            console.error("Failed because: " + error);
         },
         onProgress: function (bytesUploaded, bytesTotal) {
             var percentage = (bytesUploaded / bytesTotal * 100).toFixed(2);
